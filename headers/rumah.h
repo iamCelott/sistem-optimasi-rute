@@ -19,7 +19,7 @@ struct ListRumah {
 };
 
 void InitList(ListRumah &list);
-void TambahRumah(ListRumah &list, int id, string nama, double latitude,
+void TambahRumah(ListRumah &list, string nama, double latitude,
                  double longitude);
 Rumah *CariRumah(ListRumah list, int id);
 void TampilRumah(ListRumah list);

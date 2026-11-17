@@ -51,7 +51,7 @@ void TampilRumah(ListRumah list) {
     cout << "Nama: " << current->nama << endl;
     cout << "Latitude: " << current->latitude << endl;
     cout << "Longitude: " << current->longitude << endl;
-    cout << "------------------------" << endl;
+    cout << "====================================" << endl;
 
     current = current->next;
   }
