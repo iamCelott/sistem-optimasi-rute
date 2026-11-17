@@ -52,13 +52,48 @@ int main() {
     cin >> option;
 
     switch (option) {
-    case 1:
-      /* code */
+    case 1: {
+      if (listRumah.head == nullptr) {
+        cout << endl << "Belum ada rumah yang terdaftar!" << endl;
+      } else {
+        cout << endl << "====================================" << endl;
+        cout << "DAFTAR SELURUH RUMAH" << endl;
+        cout << "====================================" << endl;
+        TampilRumah(listRumah);
+      }
       break;
+    }
 
-    case 2:
-      /* code */
+    case 2: {
+      if (listRumah.head == nullptr) {
+        cout << endl << "Belum ada rumah yang terdaftar!" << endl;
+        break;
+      }
+
+      string namaRumah;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      cout << endl << "Masukkan nama rumah yang dicari: ";
+      getline(cin, namaRumah);
+
+      Rumah *rumah = CariRumahByNama(listRumah, namaRumah);
+
+      if (rumah == nullptr) {
+        cout << endl
+             << "Rumah dengan nama \"" << namaRumah << "\" tidak ditemukan!"
+             << endl;
+      } else {
+        cout << endl << "====================================" << endl;
+        cout << "DATA RUMAH DITEMUKAN" << endl;
+        cout << "====================================" << endl;
+        cout << "ID: " << rumah->id << endl;
+        cout << "Nama: " << rumah->nama << endl;
+        cout << "Latitude: " << rumah->latitude << endl;
+        cout << "Longitude: " << rumah->longitude << endl;
+        cout << "====================================" << endl;
+      }
       break;
+    }
 
     case 3: {
       string namaRumah;
@@ -88,13 +123,66 @@ int main() {
       break;
     }
 
-    case 4:
-      /* code */
-      break;
+    case 4: {
+      if (listRumah.head == nullptr) {
+        cout << endl << "Belum ada rumah yang terdaftar!" << endl;
+        break;
+      }
 
-    case 5:
-      /* code */
+      int id;
+      cout << endl << "Masukkan ID rumah yang ingin diedit: ";
+      cin >> id;
+
+      Rumah *rumah = CariRumahByID(listRumah, id);
+      if (rumah == nullptr) {
+        cout << endl << "Rumah dengan ID " << id << " tidak ditemukan!" << endl;
+        break;
+      }
+
+      string namaRumah;
+      string titik;
+      double latitude, longitude;
+
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      cout << "Masukkan nama baru rumah: ";
+      getline(cin, namaRumah);
+
+      cout << "Masukkan titik lokasi baru rumah: ";
+      getline(cin, titik);
+
+      try {
+        auto koordinat = NormalizeCoordinate(titik);
+        latitude = koordinat.first;
+        longitude = koordinat.second;
+      } catch (const exception &e) {
+        cout << endl << "Input tidak valid: " << e.what() << endl;
+        break;
+      }
+
+      UbahRumah(listRumah, id, namaRumah, latitude, longitude);
+
+      cout << endl << "Data rumah berhasil diperbarui!" << endl;
       break;
+    }
+
+    case 5: {
+      if (listRumah.head == nullptr) {
+        cout << endl << "Belum ada rumah yang terdaftar!" << endl;
+        break;
+      }
+
+      int id;
+      cout << endl << "Masukkan ID rumah yang ingin dihapus: ";
+      cin >> id;
+
+      if (HapusRumah(listRumah, id)) {
+        cout << endl << "Rumah berhasil dihapus!" << endl;
+      } else {
+        cout << endl << "Rumah dengan ID " << id << " tidak ditemukan!" << endl;
+      }
+      break;
+    }
 
     case 6: {
       vector<Rumah *> daftarRumah;

@@ -1,6 +1,7 @@
 
-#include "../headers/haversine.h"
+#define _USE_MATH_DEFINES
 #include <cmath>
+#include "../headers/haversine.h"
 
 using namespace std;
 

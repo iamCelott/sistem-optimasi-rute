@@ -43,6 +43,20 @@ Rumah *CariRumahByID(ListRumah list, int id) {
   return nullptr;
 }
 
+Rumah *CariRumahByNama(ListRumah list, string nama) {
+  Rumah *current = list.head;
+
+  while (current != nullptr) {
+    if (current->nama == nama) {
+      return current;
+    }
+
+    current = current->next;
+  }
+
+  return nullptr;
+}
+
 void TampilRumah(ListRumah list) {
   Rumah *current = list.head;
 

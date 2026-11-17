@@ -21,7 +21,8 @@ struct ListRumah {
 void InitList(ListRumah &list);
 void TambahRumah(ListRumah &list, string nama, double latitude,
                  double longitude);
-Rumah *CariRumah(ListRumah list, int id);
+Rumah *CariRumahByID(ListRumah list, int id);
+Rumah *CariRumahByNama(ListRumah list, string nama);
 void TampilRumah(ListRumah list);
 bool UbahRumah(ListRumah &list, int id, string nama, double latitude,
                double longitude);
