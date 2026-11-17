@@ -4,18 +4,18 @@
 
 std::pair<double, double> NormalizeLink(const std::string &url) {
   if (url.empty()) {
-    throw std::invalid_argument("Link tidak boleh kosong");
+    throw std::invalid_argument("Link tidak boleh kosong!");
   }
 
   if (url.find("google.com/maps") == std::string::npos) {
-    throw std::invalid_argument("Link bukan Google Maps");
+    throw std::invalid_argument("Link bukan Google Maps!");
   }
 
   std::regex pattern(R"(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?))");
   std::smatch match;
 
   if (!std::regex_search(url, match, pattern)) {
-    throw std::invalid_argument("Format link Google Maps tidak valid");
+    throw std::invalid_argument("Format link Google Maps tidak valid!");
   }
 
   double latitude = std::stod(match[1].str());
@@ -23,12 +23,12 @@ std::pair<double, double> NormalizeLink(const std::string &url) {
 
   if (latitude < -90 || latitude > 90) {
     throw std::invalid_argument(
-        "Latitude harus berada di antara -90 sampai 90");
+        "Latitude harus berada di antara -90 sampai 90!");
   }
 
   if (longitude < -180 || longitude > 180) {
     throw std::invalid_argument(
-        "Longitude harus berada di antara -180 sampai 180");
+        "Longitude harus berada di antara -180 sampai 180!");
   }
 
   return {latitude, longitude};
