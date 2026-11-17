@@ -5,7 +5,6 @@ TARGET = simote
 
 SOURCES = main.cpp \
           $(wildcard controllers/*.cpp) \
-          $(wildcard data/*.cpp) \
           $(wildcard utils/*.cpp)
 
 all:
