@@ -3,6 +3,9 @@
 using namespace std;
 
 int main() {
-  cout << "Hello, World!" << endl;
+  cout << "Sistem Optimasi Rute" << endl;
+  cout << endl << "--------------------------------------" << endl;
+
+  string latitudeTitikBerangkat, longitudeTitikBerangkat;
   return 0;
 }
