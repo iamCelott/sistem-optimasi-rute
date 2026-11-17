@@ -8,8 +8,14 @@ void InitList(ListRumah &list) {
   list.tail = nullptr;
 }
 
-void TambahRumah(ListRumah &list, int id, string nama, double latitude,
+void TambahRumah(ListRumah &list, string nama, double latitude,
                  double longitude) {
+  int id = 1;
+
+  if (list.tail != nullptr) {
+    id = list.tail->id + 1;
+  }
+
   Rumah *baru = new Rumah{id, nama, latitude, longitude, nullptr, nullptr};
 
   if (list.head == nullptr) {
@@ -23,7 +29,7 @@ void TambahRumah(ListRumah &list, int id, string nama, double latitude,
   list.tail = baru;
 }
 
-Rumah *CariRumah(ListRumah list, int id) {
+Rumah *CariRumahByID(ListRumah list, int id) {
   Rumah *current = list.head;
 
   while (current != nullptr) {
@@ -53,7 +59,7 @@ void TampilRumah(ListRumah list) {
 
 bool UbahRumah(ListRumah &list, int id, string nama, double latitude,
                double longitude) {
-  Rumah *rumah = CariRumah(list, id);
+  Rumah *rumah = CariRumahByID(list, id);
 
   if (rumah == nullptr) {
     return false;
@@ -67,7 +73,7 @@ bool UbahRumah(ListRumah &list, int id, string nama, double latitude,
 }
 
 bool HapusRumah(ListRumah &list, int id) {
-  Rumah *rumah = CariRumah(list, id);
+  Rumah *rumah = CariRumahByID(list, id);
 
   if (rumah == nullptr) {
     return false;
