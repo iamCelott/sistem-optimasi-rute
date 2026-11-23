@@ -37,6 +37,11 @@ int main() {
 
   ListJenisPengiriman listJenisPengiriman;
   InitList(listJenisPengiriman);
+  TambahJenisPengiriman(listJenisPengiriman, "Express");
+  TambahJenisPengiriman(listJenisPengiriman, "Regular");
+  TambahJenisPengiriman(listJenisPengiriman, "Instant");
+  TambahJenisPengiriman(listJenisPengiriman, "Same-Day");
+  TambahJenisPengiriman(listJenisPengiriman, "Cargo");
 
   bool isRunning = true;
 
