@@ -1,47 +1,91 @@
-
 #include "../headers/normalize_coordinate.h"
-#include <regex>
-#include <sstream>
-#include <stdexcept>
+#include <string>
 
-std::pair<double, double> NormalizeCoordinate(const std::string &input) {
+using namespace std;
+
+/* 
+   Fungsi pembantu untuk membersihkan spasi di awal dan akhir string
+*/
+static string Trim(const string &str) {
+  size_t first = 0;
+  while (first < str.length() && (str[first] == ' ' || str[first] == '\t' || str[first] == '\r' || str[first] == '\n')) {
+    first++;
+  }
+  if (first >= str.length()) {
+    return "";
+  }
+  size_t last = str.length() - 1;
+  while (last > first && (str[last] == ' ' || str[last] == '\t' || str[last] == '\r' || str[last] == '\n')) {
+    last--;
+  }
+  return str.substr(first, last - first + 1);
+}
+
+/* 
+   I.S. Terdefinisi string input koordinat atau link Google Maps
+   F.S. Mengembalikan std::pair<double, double> (latitude, longitude) tanpa menggunakan library regex (Aturan 2.f)
+*/
+pair<double, double> NormalizeCoordinate(const string &input) {
   if (input.empty()) {
-    throw std::invalid_argument("Input tidak boleh kosong!");
+    throw string("Input tidak boleh kosong!");
   }
 
-  double latitude, longitude;
+  double latitude = 0.0;
+  double longitude = 0.0;
+  string latStr = "";
+  string lonStr = "";
 
-  std::regex coordinatePattern(
-      R"(^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$)");
-  std::smatch match;
+  if (input.find("google.com/maps") != string::npos) {
+    size_t atPos = input.find("/@");
+    if (atPos == string::npos) {
+      throw string("Format link Google Maps tidak valid!");
+    }
 
-  if (std::regex_match(input, match, coordinatePattern)) {
-    latitude = std::stod(match[1].str());
-    longitude = std::stod(match[2].str());
+    size_t startCoord = atPos + 2;
+    size_t commaPos = input.find(',', startCoord);
+    if (commaPos == string::npos) {
+      throw string("Format link Google Maps tidak valid!");
+    }
+
+    latStr = input.substr(startCoord, commaPos - startCoord);
+
+    size_t nextComma = input.find(',', commaPos + 1);
+    size_t endLon = (nextComma != string::npos) ? nextComma : input.find('/', commaPos + 1);
+    if (endLon == string::npos) {
+      endLon = input.length();
+    }
+
+    lonStr = input.substr(commaPos + 1, endLon - (commaPos + 1));
   } else {
-    if (input.find("google.com/maps") == std::string::npos) {
-      throw std::invalid_argument(
-          "Input harus berupa koordinat atau link Google Maps!");
+    size_t commaPos = input.find(',');
+    if (commaPos == string::npos) {
+      throw string("Input harus berupa koordinat desimal (lat, lon) atau link Google Maps!");
     }
 
-    std::regex linkPattern(R"(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?))");
-
-    if (!std::regex_search(input, match, linkPattern)) {
-      throw std::invalid_argument("Format link Google Maps tidak valid!");
-    }
-
-    latitude = std::stod(match[1].str());
-    longitude = std::stod(match[2].str());
+    latStr = input.substr(0, commaPos);
+    lonStr = input.substr(commaPos + 1);
   }
 
-  if (latitude < -90 || latitude > 90) {
-    throw std::invalid_argument(
-        "Latitude harus berada di antara -90 sampai 90!");
+  latStr = Trim(latStr);
+  lonStr = Trim(lonStr);
+
+  if (latStr.empty() || lonStr.empty()) {
+    throw string("Koordinat latitude atau longitude tidak lengkap!");
   }
 
-  if (longitude < -180 || longitude > 180) {
-    throw std::invalid_argument(
-        "Longitude harus berada di antara -180 sampai 180!");
+  try {
+    latitude = stod(latStr);
+    longitude = stod(lonStr);
+  } catch (...) {
+    throw string("Format angka koordinat tidak valid!");
+  }
+
+  if (latitude < -90.0 || latitude > 90.0) {
+    throw string("Latitude harus berada di antara -90 sampai 90!");
+  }
+
+  if (longitude < -180.0 || longitude > 180.0) {
+    throw string("Longitude harus berada di antara -180 sampai 180!");
   }
 
   return {latitude, longitude};

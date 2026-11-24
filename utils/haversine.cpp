@@ -1,10 +1,13 @@
-
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "../headers/haversine.h"
 
 using namespace std;
 
+/* 
+   I.S. Terdefinisi koordinat titik 1 (latitude1, longitude1) dan titik 2 (latitude2, longitude2)
+   F.S. Mengembalikan jarak geodesik antara dua titik di permukaan bumi dalam satuan kilometer (km)
+*/
 double Haversine(double latitude1, double longitude1, double latitude2,
                  double longitude2) {
   const double R = 6371.0;
